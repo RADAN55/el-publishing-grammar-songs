@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Interactive Make That Sentence Move verb song sheet for grades 9-12 English learners.">
+  <title>Make That Sentence Move! | Interactive Verb Song Sheet</title>
+  <style>
+    :root {
+      --cardinal:#8b1538;
+      --cardinal-dark:#5e0d28;
+      --gold:#f2b134;
+      --gold-soft:#fff2c9;
+      --ink:#20242c;
+      --muted:#667085;
+      --paper:#fffdf8;
+      --line:#d6d9df;
+      --green:#16794d;
+      --green-soft:#e8f7ef;
+      --red:#b42318;
+      --red-soft:#fff0ee;
+      --blue:#285d8f;
+      --shadow:0 14px 34px rgba(70,18,35,.12);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      color:var(--ink);
+      background:
+        linear-gradient(rgba(139,21,56,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(139,21,56,.035) 1px, transparent 1px),
+        #f7f2e8;
+      background-size:28px 28px;
+      font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+    }
+    button,input,select,textarea{font:inherit}
+    button{cursor:pointer}
+    button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible{
+      outline:3px solid #2463eb; outline-offset:3px;
+    }
+    .topbar{
+      color:#fff;
+      background:linear-gradient(118deg,var(--cardinal-dark),var(--cardinal) 58%,#aa244b);
+      border-bottom:6px solid var(--gold);
+      padding:20px clamp(18px,4vw,54px);
+    }
+    .topbar-inner{max-width:1180px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand{display:flex;align-items:center;gap:16px}
+    .mark{
+      width:58px;height:58px;border:3px solid var(--gold);border-radius:50%;display:grid;place-items:center;
+      font-weight:900;font-size:1.25rem;letter-spacing:-.04em;background:rgba(255,255,255,.08)
+    }
+    .eyebrow{font-size:.78rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#ffe9a9}
+    h1{font-size:clamp(1.75rem,4vw,3rem);line-height:1.04;margin:.18rem 0 0;letter-spacing:-.025em}
+    .teacher{text-align:right;font-size:.9rem;color:#fff1c6}
+    .shell{max-width:1180px;margin:26px auto 70px;padding:0 18px}
+    .student-strip{
+      display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px;background:#fff;border:1px solid #eadfca;
+      border-radius:14px;padding:14px;box-shadow:var(--shadow);margin-bottom:18px
+    }
+    label{font-weight:800;color:#4e172a;font-size:.87rem}
+    label span{display:block;margin-bottom:5px}
+    input[type="text"],select,textarea{
+      width:100%;border:2px solid #cdd1d8;border-radius:10px;background:#fff;padding:10px 11px;color:var(--ink)
+    }
+    input[type="text"]:focus,select:focus,textarea:focus{border-color:var(--cardinal)}
+    .lesson-grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(280px,.75fr);gap:18px;align-items:start}
+    .card{background:var(--paper);border:1px solid #eadfca;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+    .card-pad{padding:clamp(18px,3vw,30px)}
+    .now-playing{position:sticky;top:16px}
+    .player-art{
+      padding:26px;background:
+      radial-gradient(circle at 15% 20%,rgba(242,177,52,.4),transparent 27%),
+      linear-gradient(145deg,var(--cardinal-dark),var(--cardinal));color:#fff
+    }
+    .record{width:150px;height:150px;margin:0 auto 20px;border-radius:50%;display:grid;place-items:center;
+      background:repeating-radial-gradient(circle,#1a1720 0 8px,#29232f 9px 13px);box-shadow:0 12px 30px rgba(0,0,0,.3)}
+    .record::after{content:"VERB";width:54px;height:54px;border-radius:50%;display:grid;place-items:center;background:var(--gold);color:var(--cardinal-dark);font-weight:950;font-size:.68rem;border:5px solid #fff3}
+    .player-art h2{margin:0;text-align:center;font-size:1.6rem}
+    .player-art p{text-align:center;margin:4px 0 16px;color:#ffe6a2}
+    audio{display:block;width:100%;accent-color:var(--gold)}
+    .player-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+    .player-actions .wide{grid-column:1/-1}
+    .btn{border:0;border-radius:11px;padding:11px 14px;font-weight:850;text-align:center;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+    .btn-gold{background:var(--gold);color:#3c2100}
+    .btn-light{background:#fff;color:var(--cardinal);border:2px solid #fff}
+    .btn-primary{background:var(--cardinal);color:#fff}
+    .btn-outline{background:#fff;color:var(--cardinal);border:2px solid var(--cardinal)}
+    .progress-wrap{padding:18px 22px;background:#fff}
+    .progress-meta{display:flex;justify-content:space-between;gap:10px;font-weight:850;margin-bottom:8px}
+    .progress-track{height:12px;background:#eceef1;border-radius:999px;overflow:hidden}
+    .progress-bar{height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--cardinal));transition:width .45s ease}
+    .score-big{color:var(--cardinal)}
+    .nav-list{padding:0 22px 20px;display:grid;gap:7px}
+    .nav-list a{color:#4d5260;text-decoration:none;padding:8px 10px;border-radius:8px;font-weight:750}
+    .nav-list a:hover{background:var(--gold-soft);color:var(--cardinal)}
+    .module{margin-bottom:18px}
+    .module-title{display:flex;align-items:center;gap:12px;margin:0 0 16px;font-size:1.35rem;line-height:1.2}
+    .step{width:34px;height:34px;flex:0 0 34px;border-radius:50%;display:grid;place-items:center;background:var(--cardinal);color:#fff;font-weight:900}
+    .tutorial-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+    .type-card{border:2px solid #efd486;border-radius:13px;background:#fff8e6;padding:14px}
+    .type-card strong{display:block;color:var(--cardinal);font-size:1.02rem}
+    .type-card small{display:block;color:var(--muted);margin-top:4px;font-size:.84rem}
+    .tip{border-left:5px solid var(--gold);background:#fff8e5;padding:13px 15px;border-radius:0 10px 10px 0;margin-top:14px}
+    details{border:1px solid var(--line);border-radius:12px;background:#fff;margin:9px 0;overflow:hidden}
+    summary{cursor:pointer;font-weight:850;color:var(--cardinal);padding:13px 15px;list-style:none;display:flex;justify-content:space-between;gap:10px}
+    summary::after{content:"+";font-size:1.25rem}
+    details[open] summary::after{content:"-"}
+    .lyrics{padding:0 15px 15px;white-space:pre-line;color:#343943}
+    .chorus{background:var(--gold-soft);border-left:5px solid var(--gold);padding:11px;border-radius:8px;font-weight:720}
+    .instructions{color:var(--muted);margin:-7px 0 14px}
+    .question{border:1px solid var(--line);border-radius:12px;padding:14px;margin:10px 0;background:#fff}
+    .question p{margin:0 0 9px;font-weight:750}
+    .inline-blanks{display:flex;align-items:center;flex-wrap:wrap;gap:8px}
+    .inline-blanks select{width:auto;min-width:126px}
+    .feedback{min-height:1.35em;margin-top:7px;font-weight:800;font-size:.9rem}
+    .correct{border-color:var(--green)!important;background:var(--green-soft)!important}
+    .incorrect{border-color:var(--red)!important;background:var(--red-soft)!important}
+    .feedback.ok{color:var(--green)}
+    .feedback.no{color:var(--red)}
+    .activity-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+    .classification{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .classification .question{margin:0}
+    textarea{min-height:108px;resize:vertical}
+    .checklist{display:grid;gap:8px;margin-top:12px}
+    .checkline{display:flex;align-items:flex-start;gap:9px;background:#f5f6f8;border-radius:9px;padding:9px 11px}
+    .checkline input{margin-top:5px;accent-color:var(--cardinal)}
+    .report{display:none}
+    .celebrate{display:none;padding:16px;border-radius:12px;background:var(--green-soft);border:2px solid var(--green);color:#145b3d;font-weight:850;margin-top:14px}
+    .celebrate.show{display:block}
+    .footer{text-align:center;color:#696e78;font-size:.82rem;margin-top:24px}
+    .footer strong{color:var(--cardinal)}
+    @media(max-width:850px){
+      .lesson-grid{grid-template-columns:1fr}.now-playing{position:static}.tutorial-grid{grid-template-columns:1fr 1fr}.classification{grid-template-columns:1fr}
+    }
+    @media(max-width:580px){
+      .topbar-inner{align-items:flex-start}.teacher{display:none}.mark{width:48px;height:48px}.student-strip{grid-template-columns:1fr}.tutorial-grid{grid-template-columns:1fr}.player-actions{grid-template-columns:1fr}.card-pad{padding:18px}.inline-blanks select{width:100%}
+    }
+    @media print{
+      body{background:#fff;font-size:11pt}.topbar{padding:14px 24px}.shell{max-width:none;margin:14px;padding:0}.lesson-grid{display:block}.now-playing,.nav-list,.activity-actions,.footer{display:none!important}.card{box-shadow:none;border:1px solid #999;margin-bottom:12px;break-inside:avoid}.student-strip{box-shadow:none}.module{break-inside:avoid}.report{display:block}.lyrics{font-size:9pt}.tutorial-grid{grid-template-columns:repeat(4,1fr)}details{break-inside:avoid}details>.lyrics{display:block}.classification{grid-template-columns:1fr 1fr}.feedback{display:none}
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="mark" aria-hidden="true">LHS</div>
+        <div><div class="eyebrow">Laurel High School | English Learner Program</div><h1>Make That Sentence Move!</h1></div>
+      </div>
+      <div class="teacher"><strong>Interactive Student Song Sheet</strong><br>Grades 9-12 | Richard A. Daniel, EL Teacher</div>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="student-strip" aria-label="Student information">
+      <label><span>Student name</span><input id="studentName" type="text" autocomplete="name" placeholder="Type your full name"></label>
+      <label><span>Class period</span><input id="classPeriod" type="text" placeholder="Example: 2nd"></label>
+      <label><span>Date</span><input id="studentDate" type="text" placeholder="MM/DD/YYYY"></label>
+    </section>
+
+    <div class="lesson-grid">
+      <section>
+        <article class="card module" id="tutorial">
+          <div class="card-pad">
+            <h2 class="module-title"><span class="step">1</span>Learn the verb test</h2>
+            <p>A <strong>verb</strong> shows an action, links the subject to a description, or helps another verb. First find the subject. Then ask: <strong>What does the subject do? What is the subject?</strong></p>
+            <div class="tutorial-grid">
+              <div class="type-card"><strong>Action</strong>students read<small>shows what happens</small></div>
+              <div class="type-card"><strong>Linking</strong>music sounds exciting<small>connects subject to detail</small></div>
+              <div class="type-card"><strong>Helping</strong>we can write<small>helps the main verb</small></div>
+              <div class="type-card"><strong>Tense</strong>study, studied, will study<small>shows time</small></div>
+            </div>
+            <div class="tip"><strong>Perfect-response strategy:</strong> Read the whole sentence. Find the subject. Locate the word or verb phrase that shows action or state. Identify its type and tense. Then explain how it works in the sentence.</div>
+          </div>
+        </article>
+
+        <article class="card module" id="lyrics">
+          <div class="card-pad">
+            <h2 class="module-title"><span class="step">2</span>Listen and follow the lyrics</h2>
+            <p class="instructions">First listen: enjoy the track. Second listen: notice the verb types and time clues. Open each section as the song plays.</p>
+            <details open><summary>Intro and Verse 1</summary><div class="lyrics">Dale, Laurel, feel the motion.
+A noun gives the name, an adjective gives detail,
+But the verb makes the sentence move.
+Uno, dos, tres - make it move!
+
+Students read, teachers guide, ideas grow,
+Every complete sentence needs a verb to show
+An action, a feeling, a state or condition.
+Find the subject first, then find its position.
+Run, write, study - action you can see.
+Think, believe, remember - action mentally.
+Ask what the subject does or what the subject is.
+That question helps you prove exactly where the verb lives.</div></details>
+            <details><summary>Pre-Chorus and Chorus</summary><div class="lyrics">What happens? What is? What does the subject do?
+Find the verb, check the tense, use the sentence clues.
+
+<div class="chorus">Make it move! Find the action in the line.
+Past, present, future - put the verb in time.
+Nombra el verbo, say the action loud,
+Match it to the subject, make the sentence proud.
+Action, linking, helping - every verb has work to do.
+If it shows what happens or what is, the verb comes through.</div></div></details>
+            <details><summary>Verse 2 - Verb Types</summary><div class="lyrics">Action verbs show movement: speak, create and learn.
+Linking verbs connect the subject: seem, become and turn.
+The music sounds exciting - sounds connects the two.
+A helping verb joins the main verb: will, have, can and do.
+They are studying; she has finished; we can write.
+Helping plus the main verb makes the meaning right.</div></details>
+            <details><summary>Breakdown and Verse 3</summary><div class="lyrics">Yesterday we studied - past tense!
+Today we study - present tense!
+Tomorrow we will study - future tense!
+One student writes; two students write - make the subject and verb agree!
+
+Singular subject, singular verb: the student reads.
+Plural subject, plural verb: the students read with speed.
+I am, you are, she is - be can change its face.
+Use the form that fits the subject, time and place.
+Irregular verbs may change: go became went,
+See became saw - use the tense you meant.</div></details>
+            <details><summary>Bridge and Final Chorus</summary><div class="lyrics">We plan the project - plan is action in that line.
+The plan is on the table - noun is what you find.
+The same word changes jobs, so check the sentence every time.
+
+Make it move! Find the action in the line.
+Past, present, future - put the verb in time.
+Action, linking, helping - choose the proper view.
+Match it to the subject and explain what it can do.
+Nombra el verbo, let the meaning come through.
+Dale, Laurel - make that sentence move!</div></details>
+          </div>
+        </article>
+
+        <article class="card module" id="hook">
+          <div class="card-pad">
+            <h2 class="module-title"><span class="step">3</span>Complete the hook</h2>
+            <p class="instructions">Choose the three verb jobs featured in the chorus.</p>
+            <div class="question" data-group="hook">
+              <p>A verb can be...</p>
+              <div class="inline-blanks">
+                <select aria-label="First verb job" data-answer="action"><option value="">Choose</option><option>action</option><option>detail</option><option>person</option></select>,
+                <select aria-label="Second verb job" data-answer="linking"><option value="">Choose</option><option>number</option><option>linking</option><option>place</option></select>, or
+                <select aria-label="Third verb job" data-answer="helping"><option value="">Choose</option><option>helping</option><option>naming</option><option>describing</option></select>.
+              </div>
+              <div class="feedback" aria-live="polite"></div>
+            </div>
+            <div class="activity-actions"><button class="btn btn-primary" type="button" onclick="checkGroup('hook')">Check the hook</button></div>
+          </div>
+        </article>
+
+        <article class="card module" id="classify">
+          <div class="card-pad">
+            <h2 class="module-title"><span class="step">4</span>Identify the verb type</h2>
+            <p class="instructions">Classify the highlighted verb or verb phrase.</p>
+            <div class="classification">
+              <div class="question" data-group="classify"><p>1. Students <strong>read</strong>.</p><select data-answer="action"><option value="">Choose</option><option>action</option><option>linking</option><option>helping</option></select><div class="feedback"></div></div>
+              <div class="question" data-group="classify"><p>2. The music <strong>sounds</strong> exciting.</p><select data-answer="linking"><option value="">Choose</option><option>action</option><option>linking</option><option>helping</option></select><div class="feedback"></div></div>
+              <div class="question" data-group="classify"><p>3. They <strong>are studying</strong>.</p><select data-answer="helping"><option value="">Choose</option><option>action</option><option>linking</option><option>helping</option></select><div class="feedback"></div></div>
+              <div class="question" data-group="classify"><p>4. Students <strong>believe</strong>.</p><select data-answer="action"><option value="">Choose</option><option>action</option><option>linking</option><option>helping</option></select><div class="feedback"></div></div>
+              <div class="question" data-group="classify"><p>5. The lesson <strong>seems</strong> easy.</p><select data-answer="linking"><option value="">Choose</option><option>action</option><option>linking</option><option>helping</option></select><div class="feedback"></div></div>
+              <div class="question" data-group="classify"><p>6. We <strong>can write</strong>.</p><select data-answer="helping"><option value="">Choose</option><option>action</option><option>linking</option><option>helping</option></select><div class="feedback"></div></div>
+            </div>
+            <div class="activity-actions"><button class="btn btn-primary" type="button" onclick="checkGroup('classify')">Check classifications</button></div>
+          </div>
+        </article>
+
+        <article class="card module" id="proper">
+          <div class="card-pad">
+            <h2 class="module-title"><span class="step">5</span>Put the verb in time</h2>
+            <p class="instructions">Use time words and verb forms to identify the tense.</p>
+            <div class="classification">
+              <div class="question" data-group="proper"><p>1. Yesterday we studied.</p><select data-answer="past"><option value="">Choose</option><option>past</option><option>present</option><option>future</option></select><div class="feedback"></div></div>
+              <div class="question" data-group="proper"><p>2. Today we study.</p><select data-answer="present"><option value="">Choose</option><option>past</option><option>present</option><option>future</option></select><div class="feedback"></div></div>
+              <div class="question" data-group="proper"><p>3. Tomorrow we will study.</p><select data-answer="future"><option value="">Choose</option><option>past</option><option>present</option><option>future</option></select><div class="feedback"></div></div>
+              <div class="question" data-group="proper"><p>4. She went to class.</p><select data-answer="past"><option value="">Choose</option><option>past</option><option>present</option><option>future</option></select><div class="feedback"></div></div>
+            </div>
+            <div class="activity-actions"><button class="btn btn-primary" type="button" onclick="checkGroup('proper')">Check verb tenses</button></div>
+          </div>
+        </article>
+
+        <article class="card module" id="write">
+          <div class="card-pad">
+            <h2 class="module-title"><span class="step">6</span>Write a strong response</h2>
+            <p><strong>Prompt:</strong> Write one sentence with a helping verb and a main verb. Then explain the job of each verb and identify the tense.</p>
+            <div class="tip"><strong>Sentence frame:</strong> The students __________ __________. The helping verb is __________. The main verb is __________. Together, they show __________ tense.</div>
+            <label for="response"><span>Your response</span></label>
+            <textarea id="response" placeholder="Write 2-3 complete sentences..."></textarea>
+            <div class="checklist">
+              <label class="checkline"><input type="checkbox" id="c1"> I wrote a complete sentence with a clear subject.</label>
+              <label class="checkline"><input type="checkbox" id="c2"> I used a helping verb and a main verb.</label>
+              <label class="checkline"><input type="checkbox" id="c3"> I explained each verb's job and identified the tense.</label>
+              <label class="checkline"><input type="checkbox" id="c4"> I checked capitalization, punctuation, and spelling.</label>
+            </div>
+            <div class="feedback" id="writingFeedback" aria-live="polite"></div>
+            <div class="activity-actions"><button class="btn btn-primary" type="button" onclick="checkWriting()">Check my writing steps</button></div>
+          </div>
+        </article>
+
+        <article class="card module" id="exit">
+          <div class="card-pad">
+            <h2 class="module-title"><span class="step">7</span>Exit ticket</h2>
+            <div class="question" data-group="exit"><p>In “We plan the project,” what job does <em>plan</em> do?</p><select data-answer="verb"><option value="">Choose</option><option>noun</option><option>verb</option><option>adjective</option></select><div class="feedback"></div></div>
+            <div class="question" data-group="exit"><p>Which sentence has correct subject-verb agreement?</p><select data-answer="the students read"><option value="">Choose</option><option>the students reads</option><option>the students read</option><option>the student read</option></select><div class="feedback"></div></div>
+            <div class="question" data-group="exit"><p>Which word is the helping verb in “She has finished”?</p><select data-answer="has"><option value="">Choose</option><option>she</option><option>has</option><option>finished</option></select><div class="feedback"></div></div>
+            <div class="activity-actions">
+              <button class="btn btn-primary" type="button" onclick="finishLesson()">Grade my work</button>
+              <button class="btn btn-outline" type="button" onclick="window.print()">Print student report</button>
+              <button class="btn btn-outline" type="button" onclick="resetLesson()">Start over</button>
+            </div>
+            <div class="celebrate" id="celebrate" aria-live="polite"></div>
+            <div class="report" id="printReport"><h3>Student Report</h3><p id="reportText"></p></div>
+          </div>
+        </article>
+      </section>
+
+      <aside class="card now-playing" aria-label="Song player and progress">
+        <div class="player-art">
+          <div class="record" aria-hidden="true"></div>
+          <h2>Make That Sentence Move</h2>
+          <p>Latin Urban Verb Track</p>
+          <audio controls preload="metadata">
+            <source src="https://audio.soundbreak.ai/b4c71939437a8f0f1fcd74e2a1c1623f/97ef0d85cf65b350b0c71c9abdcfe67e.mp3" type="audio/mpeg">
+            Your browser does not support audio playback.
+          </audio>
+          <div class="player-actions">
+            <a class="btn btn-gold" href="https://app.soundbreak.ai/listen/3f3e0cab" id="openSong" target="_blank" rel="noopener">Open song</a>
+            <button class="btn btn-light" type="button" onclick="readTutorial()">Read tutorial</button>
+            <a class="btn btn-light wide" href="https://app.soundbreak.ai/listen/48393c3d" target="_blank" rel="noopener">Play alternate mix</a>
+          </div>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-meta"><span>Practice progress</span><span class="score-big" id="scoreText">0 / 20</span></div>
+          <div class="progress-track" role="progressbar" aria-label="Practice score" aria-valuemin="0" aria-valuemax="20" aria-valuenow="0"><div class="progress-bar" id="progressBar"></div></div>
+        </div>
+        <nav class="nav-list" aria-label="Lesson sections">
+          <a href="#tutorial">1. Learn the verb test</a><a href="#lyrics">2. Follow the lyrics</a><a href="#hook">3. Complete the hook</a><a href="#classify">4. Identify verb types</a><a href="#proper">5. Identify tense</a><a href="#write">6. Write a response</a><a href="#exit">7. Exit ticket</a>
+        </nav>
+      </aside>
+    </div>
+    <p class="footer"><strong>Laurel High School English Learner Program</strong> | Original classroom practice resource - not an official ELPA21 publication.</p>
+  </main>
+
+  <script>
+    const MAX_SCORE = 20;
+    const state = {hook:0,classify:0,proper:0,writing:0,exit:0};
+
+    function questionScore(group){
+      let points = 0;
+      document.querySelectorAll('[data-group="'+group+'"]').forEach(box => {
+        const controls = [...box.querySelectorAll('[data-answer]')];
+        let right = 0;
+        controls.forEach(control => {
+          const ok = control.value.toLowerCase() === control.dataset.answer.toLowerCase();
+          control.classList.toggle('correct', ok);
+          control.classList.toggle('incorrect', control.value !== '' && !ok);
+          if(ok) right++;
+        });
+        const feedback = box.querySelector('.feedback');
+        if(right === controls.length){
+          feedback.textContent = 'Correct! You used the verb test.';
+          feedback.className = 'feedback ok';
+        }else{
+          feedback.textContent = controls.some(c => c.value === '') ? 'Complete every answer, then try again.' : 'Not yet. Use the tutorial and try again.';
+          feedback.className = 'feedback no';
+        }
+        points += right;
+      });
+      return points;
+    }
+
+    function checkGroup(group){
+      state[group] = questionScore(group);
+      updateScore();
+      saveWork();
+    }
+
+    function checkWriting(){
+      const response = document.getElementById('response').value.trim();
+      const checks = ['c1','c2','c3','c4'].filter(id => document.getElementById(id).checked).length;
+      const hasLength = response.split(/\s+/).filter(Boolean).length >= 12;
+      state.writing = hasLength ? checks : Math.min(checks, 3);
+      const feedback = document.getElementById('writingFeedback');
+      if(state.writing === 4 && hasLength){
+        feedback.textContent = 'Ready to submit: your response includes every success step.';
+        feedback.className = 'feedback ok';
+      }else{
+        feedback.textContent = 'Keep improving: write at least 12 words and complete all four checks.';
+        feedback.className = 'feedback no';
+      }
+      updateScore(); saveWork();
+    }
+
+    function totalScore(){return Object.values(state).reduce((a,b)=>a+b,0)}
+    function updateScore(){
+      const total = totalScore();
+      document.getElementById('scoreText').textContent = total+' / '+MAX_SCORE;
+      document.getElementById('progressBar').style.width = (total/MAX_SCORE*100)+'%';
+      document.querySelector('[role="progressbar"]').setAttribute('aria-valuenow', total);
+    }
+
+    function finishLesson(){
+      checkGroup('hook'); checkGroup('classify'); checkGroup('proper'); checkWriting(); checkGroup('exit');
+      const total = totalScore();
+      const pct = Math.round(total/MAX_SCORE*100);
+      const box = document.getElementById('celebrate');
+      const message = pct >= 90 ? 'Excellent verb mastery!' : pct >= 75 ? 'Strong work - review any red answers.' : 'Good start - replay the song, review the tutorial, and try again.';
+      box.textContent = message+' Final score: '+total+' / '+MAX_SCORE+' ('+pct+'%).';
+      box.classList.add('show');
+      const name = document.getElementById('studentName').value || 'Student';
+      const period = document.getElementById('classPeriod').value || 'Not entered';
+      const date = document.getElementById('studentDate').value || new Date().toLocaleDateString();
+      document.getElementById('reportText').textContent = name+' | Class: '+period+' | Date: '+date+' | Score: '+total+' / '+MAX_SCORE+' ('+pct+'%)';
+      box.scrollIntoView({behavior:'smooth',block:'center'});
+    }
+
+    function readTutorial(){
+      if(!('speechSynthesis' in window)){alert('Text-to-speech is not available in this browser.');return;}
+      speechSynthesis.cancel();
+      const text = 'A verb shows an action, links the subject to a description, or helps another verb. Read the whole sentence. Find the subject. Ask what the subject does or what the subject is. Then identify the verb type and tense.';
+      const utterance = new SpeechSynthesisUtterance(text); utterance.rate=.88; utterance.lang='en-US'; speechSynthesis.speak(utterance);
+    }
+
+    function saveWork(){
+      const data={
+        studentName:document.getElementById('studentName').value,
+        classPeriod:document.getElementById('classPeriod').value,
+        studentDate:document.getElementById('studentDate').value,
+        response:document.getElementById('response').value,
+        checks:['c1','c2','c3','c4'].map(id=>document.getElementById(id).checked)
+      };
+      localStorage.setItem('makeItMoveVerbStudentWork',JSON.stringify(data));
+    }
+
+    function loadWork(){
+      try{
+        const data=JSON.parse(localStorage.getItem('makeItMoveVerbStudentWork')||'null'); if(!data)return;
+        document.getElementById('studentName').value=data.studentName||'';
+        document.getElementById('classPeriod').value=data.classPeriod||'';
+        document.getElementById('studentDate').value=data.studentDate||'';
+        document.getElementById('response').value=data.response||'';
+        (data.checks||[]).forEach((v,i)=>{const el=document.getElementById('c'+(i+1));if(el)el.checked=v});
+      }catch(e){}
+    }
+
+    function resetLesson(){
+      if(!confirm('Clear all answers and begin again?'))return;
+      localStorage.removeItem('makeItMoveVerbStudentWork');
+      document.querySelectorAll('input[type="text"],textarea').forEach(el=>el.value='');
+      document.querySelectorAll('select').forEach(el=>{el.value='';el.classList.remove('correct','incorrect')});
+      document.querySelectorAll('input[type="checkbox"]').forEach(el=>el.checked=false);
+      document.querySelectorAll('.feedback').forEach(el=>{el.textContent='';el.className='feedback'});
+      Object.keys(state).forEach(k=>state[k]=0); document.getElementById('celebrate').classList.remove('show'); updateScore(); window.scrollTo({top:0,behavior:'smooth'});
+    }
+
+    document.querySelectorAll('input,textarea').forEach(el=>el.addEventListener('input',saveWork));
+    document.querySelectorAll('select,input[type="checkbox"]').forEach(el=>el.addEventListener('change',saveWork));
+    document.getElementById('studentDate').value = new Date().toLocaleDateString();
+    loadWork();
+  </script>
+</body>
+</html>
